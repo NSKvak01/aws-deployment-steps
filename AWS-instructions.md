@@ -160,13 +160,67 @@ location /api/ {
               proxy_pass http://127.0.0.1:3001;
       }
 ```
-Save and exit ubuntu
-* `sudo systemctl reload nginx` - you should do it everytime you do a configuration change
+* Save and exit ubuntu
 * Check nginx `sudo nginx -t`
+* `sudo systemctl reload nginx` - you should do it everytime you do a configuration change
 * Cd to home and back-end file
 * `npm i`
 * Don't forget to sudo nano .env and copy paste .env content from your code to server
 * `npm start`
+
+## P.S. 
+* For front-end and back-end put this on nginx config
+  ```
+server {
+      listen 80;
+      server_name yourdomain.com  www.yourdomain.com ;
+      location / {
+              proxy_pass http://127.0.0.1:3000;
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection 'upgrade';
+              proxy_set_header Host $host;
+              proxy_cache_bypass $http_upgrade;
+              proxy_redirect off;
+      }
+      location /api/ {
+              proxy_pass http://127.0.0.1:3001;
+      }
+}
+  ```
+
+  ###### Make sure your code is running on these ports and there are no other apps running on these ports.
+  * For static websites use the following
+  ```
+  server{
+    listen 80;
+    server_name yourdomain.com www.yourdomain.com;
+    location / {
+      root/home/ubuntu/myproject/build;
+      index index.html;
+    }
+    server_name yourdomain.com www.yourdomain.com;
+    location / {
+      root/home/ubuntu/myproject/build;
+      try_files $uri/index.html
+    }
+  }
+  ```
+  * For frontend only use 
+  ```
+server {
+      listen 80;
+      server_name yourdomain.com  www.yourdomain.com ;
+      location / {
+              proxy_pass http://127.0.0.8080;
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection 'upgrade';
+              proxy_set_header Host $host;
+              proxy_cache_bypass $http_upgrade;
+              proxy_redirect off;
+      }
+  ```
 
 
 
