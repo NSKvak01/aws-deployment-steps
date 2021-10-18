@@ -1,5 +1,5 @@
 # Create new VPC
-  1. Fo to VPC
+  1. Go to VPC
   2. Launch VPC Wizard (make sure you're in a right availability zone)
   3. Choose VPC with a Single Public Subnet (for production choose VPC with Public and Private Subnets)
   4. Type VPC name
